@@ -1,9 +1,67 @@
-﻿
+﻿@model DataCollection<CourseOverviewDto>
+
 @{
-    ViewData["Title"] = "Cursos";
+    ViewData["Title"] = "Courses";
 }
 
 <h1>@ViewData["Title"]</h1>
 
+<p class="float-right">
+    <a asp-controller="Course"
+       asp-action="Create"
+       asp-route-returnurl="@(Context.Request.Path+Context.Request.QueryString)"
+       class="btn btn-primary">Create new course</a>
+</p>
 
+@if (Model != null && Model.Items != null)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th style="width:100px;"></th>
+            <th style="width:100px"></th>
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-secondary"
+                       asp-controller="Course"
+                       asp-action="Details"
+                       asp-route-id="@item.CourseId">View</a>
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-danger"
+                       asp-controller="Course"
+                       asp-action="Remove"
+                       data-targetid="@item.CourseId"
+                       data-modal="#confirm-remove-post">Remove</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
 
+<div class="modal fade site-modal-remove" id="confirm-remove-post" data-url="@Url.Action("Remove")">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete course</h4>
+            </div>
+            <div class="modal-body">
+                <p>The course will be deleted. Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-danger" data-dismiss="modal">Remove</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Course.Index.js" asp-append-version="true"></script>
+}

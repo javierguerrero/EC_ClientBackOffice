@@ -14,9 +14,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Course" asp-action="Index">Courses</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Lesson" asp-action="Index">Lessons</a>
-                    </li>
                 </ul>
             </div>
             @if (User.Identity.IsAuthenticated)
@@ -27,8 +24,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> @User.Identity.Name </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
-                                <a asp-controller="User" asp-action="Index" class="dropdown-item">Mi cuenta</a>
-                                <a asp-controller="Account" asp-action="Logout" class="dropdown-item">Finalizar sesión</a>
+                                <a asp-controller="User" asp-action="Index" class="dropdown-item">My profile</a>
+                                <a asp-controller="Account" asp-action="Logout" class="dropdown-item">Logout</a>
                             </div>
                         </li>
                     </ul>

@@ -1,0 +1,34 @@
+﻿@model CourseCreateViewModel
+
+@{
+    ViewData["Title"] = "New Course";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-action="create">
+    <hr />
+    <input type="hidden" asp-for="ReturnUrl" />
+    @if (!ViewContext.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="alert alert-danger">
+            <h4>Error:</h4>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <span asp-validation-for="Name"></span>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <span asp-validation-for="Description"></span>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Create" />
+    </div>
+</form>
