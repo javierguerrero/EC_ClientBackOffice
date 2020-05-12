@@ -1,0 +1,68 @@
+﻿@model DataCollection<LessonOverviewDto>
+
+@{
+    ViewData["Title"] = "Lessons";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<p class="float-right">
+    <a asp-action="create"
+       asp-controller="lesson"
+       asp-route-returnurl="@(Context.Request.Path+Context.Request.QueryString)"
+       class="btn btn-primary">Create new lesson</a>
+</p>
+@if (Model != null && Model.Items != null)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td></td>
+                <td>
+                    <a class="btn btn-sm btn-secondary"
+                       asp-controller="Lesson"
+                       asp-action="Detail"
+                       asp-route-id="@item.LessonId">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-danger"
+                       asp-controller="Lesson"
+                       asp-action="remove"  
+                       data-targetid="@item.LessonId"
+                       data-modal="#confirm-remove-post">Remove</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<div class="modal fade site-modal-remove" id="confirm-remove-post" data-url="@Url.Action("Remove")">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete lesson</h4>
+            </div>
+            <div class="modal-body">
+                <p>The lesson will be deleted. Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-danger" data-dismiss="modal">Remove</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Lesson.Index.js" asp-append-version="true"></script>
+}
