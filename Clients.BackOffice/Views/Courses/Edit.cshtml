@@ -1,15 +1,22 @@
 ﻿@model CourseEditViewModel
 
 @{
-    ViewData["Title"] = "Course Settings";
+    ViewData["Title"] = Model.Name;
 }
 
 <h1>@ViewData["Title"]</h1>
 
+@if (ViewBag.TheResult == true)
+{
+    <div class="alert alert-success">
+        <strong>Thank you!</strong> Your changes have been saved.
+    </div>
+}
+
 <ul class="nav nav-tabs">
     <li class="nav-item">
         <a class="nav-link"
-           asp-controller="Course"
+           asp-controller="Courses"
            asp-action="Details"
            asp-route-id="@Model.CourseId">
             Lessons
@@ -20,10 +27,8 @@
     </li>
 </ul>
 
-
-
 <form method="post" asp-action="Edit">
-    <input type="hidden" asp-for="ReturnUrl" />
+    <input type="hidden" asp-for="CourseId" />
     @if (!ViewContext.ModelState.IsValid)
     {
         <div asp-validation-summary="All" class="alert alert-danger">
@@ -47,3 +52,7 @@
         <input type="submit" class="btn btn-primary" value="Save" />
     </div>
 </form>
+
+@section Scripts {
+    <script src="~/js/Course.Edit.js" asp-append-version="true"></script>
+}

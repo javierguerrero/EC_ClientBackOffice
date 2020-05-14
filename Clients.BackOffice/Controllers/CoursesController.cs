@@ -1,13 +1,10 @@
 ﻿using Clients.BackOffice.Proxies.Catalog;
 using Clients.BackOffice.Proxies.Catalog.Commands;
-using Clients.BackOffice.Proxies.Catalog.DTOs;
-using Clients.BackOffice.Proxies.Common;
 using Clients.BackOffice.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Clients.BackOffice.Controllers
@@ -28,7 +25,19 @@ namespace Clients.BackOffice.Controllers
             return View(result);
         }
 
-        public IActionResult Create(string returnUrl)
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await _catalogProxy.GetCourseAsync(id);
+
+            var vm = new CourseDetailsViewModel
+            {
+                CourseId = result.CourseId,
+                Name = result.Name
+            };
+            return View("Details", vm);
+        }
+
+        public IActionResult Create()
         {
             var vm = new CourseCreateViewModel
             {
@@ -39,14 +48,14 @@ namespace Clients.BackOffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CourseCreateViewModel vm)
+        public async Task<IActionResult> Create(CourseCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var command = new CourseCreateCommand
                 {
-                    Name = vm.Name,
-                    Description = vm.Description
+                    Name = model.Name,
+                    Description = model.Description
                 };
 
                 try
@@ -62,38 +71,49 @@ namespace Clients.BackOffice.Controllers
             return View();
         }
 
-
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var vm = new CourseDetailsViewModel
-            {
-                CourseId = id
-            };
-            return View("Details", vm);
-        }
-
-        //personalizar url con "settings"
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var result = await _catalogProxy.GetCourseAsync(id);
+
             var vm = new CourseEditViewModel
             {
-                CourseId = id,
-                Name = string.Empty,
-                Description = string.Empty
+                CourseId = result.CourseId,
+                Name = result.Name,
+                Description = result.Description
             };
             return View("Edit", vm);
         }
 
         [HttpPost]
-        public IActionResult Edit(CourseEditViewModel model)
+        public async Task<IActionResult> Edit(CourseEditViewModel model)
         {
-            return View("Edit", model);
+            if (ModelState.IsValid)
+            {
+                var command = new CourseUpdateCommand
+                {
+                    CourseId = model.CourseId,
+                    Name = model.Name,
+                    Description = model.Description
+                };
+
+                try
+                {
+                    await _catalogProxy.UpdateCourseAsync(command);
+                    ViewBag.TheResult = true;
+                    return View("Edit", model);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View();
         }
 
         public async Task<IActionResult> Remove(int id)
         {
+            await _catalogProxy.RemoveCourseAsync(id);
             return Ok();
         }
     }

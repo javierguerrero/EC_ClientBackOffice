@@ -1,7 +1,7 @@
 ﻿@model CourseDetailsViewModel
 
 @{
-    ViewData["Title"] = "Course Details";
+    ViewData["Title"] = Model.Name;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -12,14 +12,14 @@
     </li>
     <li class="nav-item">
         <a class="nav-link"
-           asp-controller="Course"
+           asp-controller="Courses"
            asp-action="Edit"
            asp-route-id="@Model.CourseId">
             Settings
         </a>
     </li>
 </ul>
-
+<br />
 <p class="float-right">
     <a asp-controller="Lesson"
        asp-action="Create"

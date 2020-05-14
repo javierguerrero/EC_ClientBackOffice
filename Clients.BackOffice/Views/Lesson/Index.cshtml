@@ -13,7 +13,7 @@
        asp-route-returnurl="@(Context.Request.Path+Context.Request.QueryString)"
        class="btn btn-primary">Create new lesson</a>
 </p>
-@if (Model != null && Model.Items != null)
+@if (Model != null && Model.Items.Any())
 {
     <table class="table table-bordered">
         <tr>
