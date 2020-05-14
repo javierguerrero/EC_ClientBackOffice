@@ -8,7 +8,6 @@
 
 <form method="post" asp-action="create">
     <hr />
-    <input type="hidden" asp-for="ReturnUrl" />
     @if (!ViewContext.ModelState.IsValid)
     {
         <div asp-validation-summary="All" class="alert alert-danger">

@@ -11,8 +11,6 @@ namespace Clients.BackOffice.ViewModels
     {
         public int CourseId { get; set; }
 
-        public string ReturnUrl { get; set; }
-
         [Required]
         public string Name { get; set; }
 

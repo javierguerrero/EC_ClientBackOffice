@@ -12,6 +12,10 @@ namespace Clients.BackOffice.Proxies.Catalog
 {
     public interface ICatalogProxy
     {
+        Task<DataCollection<CourseOverviewDto>> GetCourseOverviewsAsync(int page, int take);
+        Task CreateCourseAsync(CourseCreateCommand command);
+
+
         Task<DataCollection<LessonOverviewDto>> GetLessonOverviewsAsync(int page, int take);
 
         Task<LessonDto> GetLessonAsync(int id);
@@ -34,6 +38,37 @@ namespace Clients.BackOffice.Proxies.Catalog
             _httpClient = httpClient;
             _apiGatewayUrl = apiGatewayUrl.Value;
         }
+
+        #region Course
+
+        public async Task<DataCollection<CourseOverviewDto>> GetCourseOverviewsAsync(int page, int take)
+        {
+            var request = await _httpClient.GetAsync($"{_apiGatewayUrl}courses?page={page}&take={take}");
+            request.EnsureSuccessStatusCode();
+
+            return JsonSerializer.Deserialize<DataCollection<CourseOverviewDto>>(
+                await request.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }
+            );
+        }
+
+        public async Task CreateCourseAsync(CourseCreateCommand command)
+        {
+            var content = new StringContent(
+                JsonSerializer.Serialize(command),
+                Encoding.UTF8,
+                "application/json"
+            );
+            var request = await _httpClient.PostAsync($"{_apiGatewayUrl}courses", content);
+            request.EnsureSuccessStatusCode();
+        }
+
+        #endregion Course
+
+        #region Lesson
 
         public async Task<DataCollection<LessonOverviewDto>> GetLessonOverviewsAsync(int page, int take)
         {
@@ -94,5 +129,7 @@ namespace Clients.BackOffice.Proxies.Catalog
             var request = await _httpClient.DeleteAsync($"{_apiGatewayUrl}lessons/{id}");
             request.EnsureSuccessStatusCode();
         }
+
+        #endregion Lesson
     }
 }

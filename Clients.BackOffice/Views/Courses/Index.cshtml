@@ -7,9 +7,8 @@
 <h1>@ViewData["Title"]</h1>
 
 <p class="float-right">
-    <a asp-controller="Course"
+    <a asp-controller="Courses"
        asp-action="Create"
-       asp-route-returnurl="@(Context.Request.Path+Context.Request.QueryString)"
        class="btn btn-primary">Create new course</a>
 </p>
 
@@ -29,13 +28,13 @@
                 <td>@item.Description</td>
                 <td class="text-center">
                     <a class="btn btn-sm btn-secondary"
-                       asp-controller="Course"
+                       asp-controller="Courses"
                        asp-action="Details"
                        asp-route-id="@item.CourseId">View</a>
                 </td>
                 <td class="text-center">
                     <a class="btn btn-sm btn-danger"
-                       asp-controller="Course"
+                       asp-controller="Courses"
                        asp-action="Remove"
                        data-targetid="@item.CourseId"
                        data-modal="#confirm-remove-post">Remove</a>
